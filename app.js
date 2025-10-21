@@ -1,67 +1,51 @@
-/*function sortear() {
-  let quantidade = parseInt(document.getElementById("quantidade").value);
-  let de = parseInt(document.getElementById("de").value);
-  let ate = parseInt(document.getElementById("ate").value);
-
-  let numero = obterNumeroAleatorio(de, ate);
-
-  for (let i = 1; i <= quantidade; i++) {
-    let novoNumero = obterNumeroAleatorio(de, ate);
-
-    // O while repete o sorteio enquanto o número gerado JÁ ESTIVER na lista
-    while (numerosSorteados.includes(novoNumero)) {
-      for (let i = 1; i <= quantidade; i++) {
-        let novoNumero = obterNumeroAleatorio(de, ate);
-
-        // O while repete o sorteio enquanto o número gerado JÁ ESTIVER na lista
-        while (numerosSorteados.includes(novoNumero)) {
-          // Se for repetido, gera um novo número para checar na próxima rodada
-          novoNumero = obterNumeroAleatorio(de, ate);
-        }
-
-        // Adiciona o número único (o while garante que ele não se repete)
-        numerosSorteados.push(novoNumero);
-      }
-      novoNumero = obterNumeroAleatorio(de, ate);
-    }
-
-    numerosSorteados.push(novoNumero);
-  }
-}*/
-
 function sortear() {
+  // 1. Coleta e Conversão dos Valores Iniciais
   let quantidade = parseInt(document.getElementById("quantidade").value);
   let de = parseInt(document.getElementById("de").value);
   let ate = parseInt(document.getElementById("ate").value);
 
-  // 1. O tratamento de erro
+  // 2. Tratamento de Erro (Garante que a quantidade pedida seja possível)
   let totalDeNumeros = ate - de + 1;
 
-  if (quantidade > totalDeNumeros) {
-    alert(
-      `O número de ${quantidade} que você pediu é maior do que o total de ${totalDeNumeros} números disponíveis no intervalo de ${de} a ${ate}.`
-    );
-    return; // Para a função aqui.
+  // Repete enquanto a quantidade pedida for maior que o total disponível
+  while (quantidade > totalDeNumeros) {
+    // Pede um novo valor ao usuário
+    let novaQuantidade = prompt(`A quantidade pedida (${quantidade}) é maior do que o total de ${totalDeNumeros} números disponíveis no intervalo de ${de} a ${ate}. Por favor, insira uma nova quantidade (máximo ${totalDeNumeros}):`);
+    
+    // Atualiza a variável 'quantidade' com o novo valor
+    quantidade = parseInt(novaQuantidade);
   }
 
-  // 2. A lógica de sorteio (que só roda se o if for falso)
-  let numerosSorteados = [];
+  // Checagem final para se o usuário digitou algo inválido ou cancelou o prompt
+  if (isNaN(quantidade) || quantidade <= 0) {
+     alert("Operação cancelada ou quantidade inválida após a correção.");
+     return;
+  }
+  
+  // 3. Lógica do Sorteio
+  let numerosSorteados = []; 
 
+  // O loop principal (roda o número exato de vezes definido pela 'quantidade')
   for (let i = 1; i <= quantidade; i++) {
-    let novoNumero = obterNumeroAleatorio(de, ate);
+    let novoNumero = obterNumeroAleatorio(de, ate); 
 
-    while (numerosSorteados.includes(novoNumero)) {
-      novoNumero = obterNumeroAleatorio(de, ate);
+    // Loop interno (Garante Unicidade): repete o sorteio enquanto o número gerado JÁ ESTIVER na lista
+    while (numerosSorteados.includes(novoNumero)) { 
+        novoNumero = obterNumeroAleatorio(de, ate);
     }
-
+    
+    // Adiciona o número único à lista
     numerosSorteados.push(novoNumero);
   }
 
-  // 3. Exibir o resultado
-  let resultado = document.getElementById("resultado");
-  resultado.innerHTML = numerosSorteados.join(" - ");
+  // 4. Exibir o Resultado
+  let resultado = document.getElementById('resultado'); 
+  // Usa join() para formatar a lista com separador " - "
+  resultado.innerHTML = numerosSorteados.join(' - ');
 }
 
+// A função auxiliar de sorteio (não deve ser mudada)
 function obterNumeroAleatorio(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
