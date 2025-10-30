@@ -42,6 +42,7 @@ function sortear() {
   let resultado = document.getElementById('resultado'); 
   // Usa join() para formatar a lista com separador " - "
   resultado.innerHTML = numerosSorteados.join(' - ');
+  alterarStatusBotao();
 }
 
 // A função auxiliar de sorteio (não deve ser mudada)
@@ -49,3 +50,13 @@ function obterNumeroAleatorio(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function alterarStatusBotao() {
+  let botao =  document.getElementById('btn-reiniciar');
+  if (botao.classList.contains('container__botao-desabilitado')) {
+    botao.classList.remove('container__botao-desabilitado');
+
+  } else {
+
+  }
+
+}
